@@ -44,7 +44,7 @@ def fetch_gif_and_metadata(query: str = Query(...)):
 
         # Step 3: Query Supabase for metadata
         response = supabase.table("gif_metadata").select("*").eq("file_path", most_common_path).limit(1).execute()
-        response.data[0]["summary"] = client.direct_query("Rewrite the following as a vivid and elegant memory. "
+        response.data[0]["summary"] = client.direct_query("Rewrite the following as a vivid and elegant memory,in 3 to 8 lines."
                                                   "It should feel warm and grounded, something the user can fondly reflect on without being sentimental or nostalgic."
                                                   "The tone should be almost factual, but with poetic clarity and grace. "
                                                   "Add light context where it fits, such as 'This was during your time exploring Paris.'"
