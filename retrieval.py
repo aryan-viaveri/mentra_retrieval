@@ -37,16 +37,25 @@ def fetch_gif_and_metadata(query: str = Query(...)):
     try:
         # Step 0: Rewrite the query to improve RAG alignment
         rewrite_prompt = f"""
-        The user has entered the following search query:
-
+        The user entered the following search query:
+        
         "{query}"
-
-        Your task is to rewrite this query to better align with memory-based retrieval patterns, as used in systems like HyPE.
-
-        The rewritten query should sound casual and slightly imprecise—something a user might type when trying to find a moment from memory. Think in terms of vibe, scene, or emotional anchor. Avoid technical or literal phrasing.
-
-        Do not add explanations. Output only the rewritten query as a single line.
+        
+        Your task is to rewrite this query to better align with memory-style retrieval used in systems like HyPE.
+        
+        HyPE generates image summaries based on AI-inferred content from GIFs—not metadata or user-provided context. Your rewrite should help match that.
+        
+        The rewritten query should:
+        - Reflect what might be visibly happening in the image.
+        - Be casual and slightly vague—how someone might recall a scene from memory.
+        - Avoid technical, specific, or literal phrasing.
+        - Focus on what would likely be *seen* in the image (e.g., objects, actions, setting, mood).
+        
+        Example: Instead of "Show me when I was at the YCombinator hackathon," say "Show me one where people are hunched over laptops and it feels super busy."
+        
+        Output only the rewritten query as a single line. No extra explanations.
         """
+
         query = client.direct_query(rewrite_prompt)["response"].strip()
 
         # Step 1: Get top-k context chunks
