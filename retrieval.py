@@ -1,6 +1,7 @@
 import os
 from collections import Counter
 from typing import Dict, Any, List
+from fastapi.middleware.cors import CORSMiddleware
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
@@ -20,6 +21,13 @@ supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 # ---- FastAPI app ----
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow any origin
+    allow_credentials=False,  # Must be False when allow_origins is "*"
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/gif_metadata")
 def fetch_gif_and_metadata(query: str = Query(...)):
     try:
